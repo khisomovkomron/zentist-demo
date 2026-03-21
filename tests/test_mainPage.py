@@ -5,9 +5,25 @@ import os
 load_dotenv() 
 
 class TestMainPage:
+    '''
+    Scenario 1 - Main Page
+        Open Main Page
+        Assert page has title
+        Assert page has ‘Fork me on Github’ element
+        Assert page content contains 44 links
+    '''
     
-    def test_site_is_accessible(self, browser):
-        browser.goto(os.getenv("BASE_PAGE"))
-        assert browser.title() != ""
+    def test_site_is_accessible(self, mainPage):
+        mainPage.goto(os.getenv("MAIN_PAGE"))
+        assert mainPage.get_title() != ""
         
+    def test_page_has_for_me_element(self, mainPage):
+        mainPage.goto("/")
+        assert mainPage.get_fork_me_img().is_visible()
+        
+    def test_page_has_links(self, mainPage):
+        mainPage.goto("/")
+        links = mainPage.get_all_links()
+        assert links.count() > 0
+        assert links.count() == 44
         
