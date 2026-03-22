@@ -1,5 +1,6 @@
 from dotenv import load_dotenv  
 import os 
+from playwright.sync_api import expect  
 
 load_dotenv() 
 
@@ -17,3 +18,6 @@ class BasePage:
     
     def locator(self, selector):
         return self.page.locator(selector)
+    
+    def expect_condition(self, locator, text: str):
+        return expect(locator).to_have_text(text)

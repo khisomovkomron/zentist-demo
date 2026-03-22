@@ -16,6 +16,7 @@ class TestMainPage:
     def test_site_is_accessible(self, mainPage):
         mainPage.goto(os.getenv("MAIN_PAGE"))
         assert mainPage.get_title() != ""
+        mainPage.expect_text("Welcome to the-internet")
         
     def test_page_has_for_me_element(self, mainPage):
         mainPage.goto("/")
