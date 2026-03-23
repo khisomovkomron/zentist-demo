@@ -13,9 +13,8 @@ class BasePage:
         
     def goto(self, endpoint=""):
         url = os.getenv("BASE_URL") + endpoint
-        self.page.goto(url)
         logger.info(f"Navigating to {url}")
-        
+        self.page.goto(url)
         
     def get_title(self):
         return self.page.title()

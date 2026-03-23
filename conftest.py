@@ -5,6 +5,7 @@ from pages.MainPage import MainPage
 from pages.LoginPage import LoginPage
 from pages.InternalPage import InternalPage
 import logging
+import allure
 
 logger = logging.getLogger(__name__)
 
@@ -38,3 +39,12 @@ def loginPage(browser):
 @pytest.fixture
 def internalPage(browser):
     return InternalPage(browser)
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    rep = outcome.get_result()
+    if rep.when == "call" and rep.failed:
+        page = item.funcargs['browser']
+        screenshot = page.screenshot()
+        allure.attach(screenshot, name="screenshot", attachment_type=allure.attachment_type.PNG)
