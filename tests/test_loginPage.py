@@ -20,13 +20,12 @@ class TestLoginPage:
         mainPage.goto(os.getenv("MAIN_PAGE"))
         mainPage.navigate_to_form_authentication()
         loginPage.login(username="tomsmith", password="wrong")
-        
         expect(loginPage.get_error_message()).to_contain_text("Your password is invalid!")
 
     @pytest.mark.parametrize("username, password, error_message", [
-        ("tomsmith", "wrong", "Your password is invalid!"), 
-        ("invalid", "SuperSecretPassword!", "Your username is invalid!"), 
-        (" ", " ", "Your username is invalid!")])
+                            ("tomsmith", "wrong", "Your password is invalid!"), 
+                            ("invalid", "SuperSecretPassword!", "Your username is invalid!"), 
+                            (" ", " ", "Your username is invalid!")])
     def test_login_negative_cases(self, mainPage, loginPage, username, password, error_message):
         mainPage.goto(os.getenv("MAIN_PAGE"))
         mainPage.navigate_to_form_authentication()
@@ -44,7 +43,7 @@ class TestLoginPage:
         Logout
         Assert user logged out
     '''
-    def test_login_positive_case(self, mainPage, loginPage, internalPage):
+    def test_login_positive_case(self, loginPage, internalPage):
         loginPage.goto(os.getenv("LOGIN_PAGE"))
         loginPage.login(username="tomsmith", password="SuperSecretPassword!")
         expect(loginPage.get_success_message()).to_contain_text(" You logged into a secure area!")

@@ -12,10 +12,14 @@ logger = logging.getLogger(__name__)
 def browser():
     playwright = sync_playwright().start()
     browser = playwright.chromium.launch(headless=False)
+    logger.info("Browser launched")
     page = browser.new_page()
+    logger.info("New page created")
     yield page
     page.close()
+    logger.info("Page closed")
     browser.close()
+    logger.info("Browser closed")
     playwright.stop()
 
 

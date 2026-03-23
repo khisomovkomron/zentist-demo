@@ -1,7 +1,9 @@
 import pytest
 from dotenv import load_dotenv  
 import os 
+import logging
 
+logger = logging.getLogger(__name__)
 load_dotenv() 
 
 class TestMainPage:
@@ -12,6 +14,8 @@ class TestMainPage:
         Assert page has ‘Fork me on Github’ element
         Assert page content contains 44 links
     '''
+
+    # реализовал 2 сценарие в разных тестах, можно скомбинироват в один, но так будет лучше для ассертов
     
     def test_site_is_accessible(self, mainPage):
         mainPage.goto(os.getenv("MAIN_PAGE"))

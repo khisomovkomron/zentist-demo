@@ -1,7 +1,9 @@
 from dotenv import load_dotenv  
 import os 
 from playwright.sync_api import expect  
+import logging
 
+logger = logging.getLogger(__name__)
 load_dotenv() 
 
 class BasePage:
@@ -12,6 +14,8 @@ class BasePage:
     def goto(self, endpoint=""):
         url = os.getenv("BASE_URL") + endpoint
         self.page.goto(url)
+        logger.info(f"Navigating to {url}")
+        
         
     def get_title(self):
         return self.page.title()
