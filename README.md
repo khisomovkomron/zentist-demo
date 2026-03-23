@@ -39,7 +39,6 @@ cp .env.example .env
 Run all tests:
 ```bash
 python -m pytest tests/ -vvv --log-cli-level=INFO --alluredir=allure-results
-allure serve allure-results
 ```
 
 Run tests for a specific page:
@@ -54,5 +53,10 @@ python -m pytest tests/test_mainPage.py::TestMainPage::test_site_is_accessible -
 python -m pytest tests/test_loginPage.py::TestLoginPage::test_login_positive_case -vvv
 ```
 
+## Reports
+Script to generate local html link to view test results
+```bash
+allure serve allure-results
+```
 
-![Allure reports for all tests](Allure%20reports%20for%20all%20tests.png)
+![Sample of allure reports](Allure%20reports%20for%20all%20tests.png)

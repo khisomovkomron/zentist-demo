@@ -25,9 +25,13 @@ class TestLoginPage:
         expect(loginPage.get_error_message()).to_contain_text("Your password is invalid!")
 
     @pytest.mark.parametrize("username, password, error_message", [
-                            ("tomsmith", "wrong", "Your password is invalid!"), 
-                            ("invalid", "SuperSecretPassword!", "Your username is invalid!"), 
-                            (" ", " ", "Your username is invalid!")])
+                            ("tomsmith", "wrong", "Your password is invalid!"),  # valid username, invalid password
+                            ("tomsmith", " ", "Your password is invalid!"), # valid username, empty password
+                            (" ", "SuperSecretPassword!", "Your username is invalid!"),  # empty username, valid password
+                            ("invalid", "SuperSecretPassword!", "Your username is invalid!"), # invalid username, valid password
+                            ("<script>alert(1)</script>", "test", "Your username is invalid!"), # script injection attempt
+                            ("'DROP database", "test", "Your username is invalid!"), # sql injection attempt
+                            (" ", " ", "Your username is invalid!")]) # empty username, empty password
     def test_login_negative_cases(self, mainPage, loginPage, username, password, error_message):
         logger.info(f"________ Testing (parametrized) login with username: '{username}' and password: '{password}'")
         mainPage.goto(os.getenv("MAIN_PAGE"))
@@ -70,4 +74,4 @@ class TestLoginPage:
 
         except Exception as e:
             logger.error(f"An error occurred during the test: {e}")
-            raise    
+            raise
