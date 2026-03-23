@@ -3,6 +3,10 @@ import pytest
 from pages.BasePage import BasePage
 from pages.MainPage import MainPage
 from pages.LoginPage import LoginPage
+from pages.InternalPage import InternalPage
+import logging
+
+logger = logging.getLogger(__name__)
 
 @pytest.fixture(scope="session")
 def browser():
@@ -26,3 +30,7 @@ def mainPage(browser):
 @pytest.fixture
 def loginPage(browser):
     return LoginPage(browser)
+
+@pytest.fixture
+def internalPage(browser):
+    return InternalPage(browser)

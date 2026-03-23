@@ -3,7 +3,9 @@ from dotenv import load_dotenv
 import os 
 from playwright.sync_api import expect  
 
+
 load_dotenv() 
+
 
 class TestLoginPage:
     '''
@@ -19,7 +21,7 @@ class TestLoginPage:
         mainPage.navigate_to_form_authentication()
         loginPage.login(username="tomsmith", password="wrong")
         
-        expect(loginPage.error1()).to_contain_text("Your password is invalid!")
+        expect(loginPage.get_error_message()).to_contain_text("Your password is invalid!")
 
     @pytest.mark.parametrize("username, password, error_message", [
         ("tomsmith", "wrong", "Your password is invalid!"), 
@@ -30,4 +32,31 @@ class TestLoginPage:
         mainPage.navigate_to_form_authentication()
         loginPage.login(username, password)
         
-        expect(loginPage.error1()).to_contain_text(error_message)
+        expect(loginPage.get_error_message()).to_contain_text(error_message)
+        
+    '''
+    Scenario 3 - Login to the site
+        Open Login page
+        Login with valid credentials
+        Assert user in on the /security page
+        Assert page has title and content
+        Assert page has “Logout” button
+        Logout
+        Assert user logged out
+    '''
+    def test_login_positive_case(self, mainPage, loginPage, internalPage):
+        loginPage.goto(os.getenv("LOGIN_PAGE"))
+        loginPage.login(username="tomsmith", password="SuperSecretPassword!")
+        expect(loginPage.get_success_message()).to_contain_text(" You logged into a secure area!")
+        
+        assert "secure" in internalPage.page.url
+
+        assert internalPage.get_title_text() == "Secure Area"
+        expect(internalPage.get_content()).to_be_visible()
+        
+        expect(internalPage.get_logout_button()).to_be_visible()
+        
+        internalPage.logout()
+        expect(loginPage.get_success_message()).to_contain_text("You logged out of the secure area!")
+
+        
